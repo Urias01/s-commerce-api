@@ -21,8 +21,10 @@ public class User extends Auditable {
 
   private UserRole role;
 
-  public User(UUID id, UserRole role) {
-    this.id = id;
+  protected User() {
+  }
+
+  public User(UserRole role) {
     this.role = role;
   }
 
