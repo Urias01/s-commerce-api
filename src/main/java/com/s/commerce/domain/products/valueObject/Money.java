@@ -1,9 +1,12 @@
 package com.s.commerce.domain.products.valueObject;
 
+import jakarta.persistence.Embeddable;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Currency;
 
+@Embeddable
 public record Money(BigDecimal value, Currency currency) {
 
   private static final int SCALE = 2;
@@ -30,11 +33,8 @@ public record Money(BigDecimal value, Currency currency) {
 
   public Money add(Money other) {
     assertSameCurrency(other);
-    if (other == null) {
-      throw new IllegalArgumentException("Other Money cannot be null");
-    }
 
-    if (this.value.compareTo(BigDecimal.ZERO) < 0) {
+      if (this.value.compareTo(BigDecimal.ZERO) < 0) {
       throw new IllegalArgumentException("Price cannot be negative");
     }
 
@@ -43,11 +43,8 @@ public record Money(BigDecimal value, Currency currency) {
 
   public Money subtract(Money other) {
     assertSameCurrency(other);
-    if (other == null) {
-      throw new IllegalArgumentException("Other Money cannot be null");
-    }
 
-    if (this.value.compareTo(other.value) < 0) {
+      if (this.value.compareTo(other.value) < 0) {
       throw new IllegalArgumentException("Insufficient funds");
     }
 

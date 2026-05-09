@@ -6,11 +6,7 @@ import com.s.commerce.domain.common.Auditable;
 import com.s.commerce.domain.products.enums.ProductCategory;
 import com.s.commerce.domain.products.valueObject.Money;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
@@ -24,7 +20,9 @@ public class Product extends Auditable {
 
   private String name;
   private String description;
+  @Embedded
   private Money price;
+  @Enumerated(value = EnumType.STRING)
   private ProductCategory category;
 
   protected Product() {
