@@ -1,10 +1,8 @@
 package com.s.commerce.application.products.create;
 
-import java.util.UUID;
+import com.s.commerce.domain.products.valueObject.ProductId;
 
-public record CreateProductResponse(UUID id) {
 
-    public CreateProductResponse(UUID id) {
-        this.id = id;
-    }
+public record CreateProductResponse(ProductId id) {
+
 }
