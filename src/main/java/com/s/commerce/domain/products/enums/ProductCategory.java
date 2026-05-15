@@ -1,10 +1,13 @@
 package com.s.commerce.domain.products.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum ProductCategory {
 
   CAKE("bolo"),
   CUPCAKE("cupcake"),
-  CANDY("brigadeiros");
+  SWEET("sweet");
 
   private final String description;
 
@@ -12,7 +15,4 @@ public enum ProductCategory {
     this.description = description;
   }
 
-  public String getDescription() {
-    return description;
-  }
 }
