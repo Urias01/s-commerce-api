@@ -6,6 +6,8 @@ import com.s.commerce.domain.products.repositories.IProductRepository;
 import com.s.commerce.domain.products.valueObject.ProductId;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class EditProductUseCase {
 
@@ -15,9 +17,9 @@ public class EditProductUseCase {
         this.productRepository = productRepository;
     }
 
-    public EditProductResponse execute(ProductId productId, EditProductRequest request) {
+    public EditProductResponse execute(UUID productId, EditProductRequest request) {
 
-        Product product = this.productRepository.findById(productId)
+        Product product = this.productRepository.findById(new ProductId(productId))
                 .orElseThrow(() -> new IllegalArgumentException("Product Not Found"));
 
         Product newProduct = ProductMapper.toEdit(product, request);

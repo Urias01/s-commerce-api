@@ -1,4 +1,4 @@
-package com.s.commerce.infrastructure.jpa.user;
+package com.s.commerce.infrastructure.persistence.user;
 
 import java.util.UUID;
 

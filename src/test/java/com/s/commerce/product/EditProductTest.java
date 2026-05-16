@@ -44,7 +44,7 @@ public class EditProductTest {
 
         EditProductRequest request = new EditProductRequest("Strawberry Cake", "A wonderful strawberry cake", price, ProductCategory.CAKE);
 
-        EditProductResponse response = editProductUseCase.execute(product.getId(), request);
+        EditProductResponse response = editProductUseCase.execute(product.getId().value(), request);
 
         verify(productRepository).update(product);
         assertEquals(product.getId(), response.id());
