@@ -3,6 +3,7 @@ package com.s.commerce.application.products.mappers;
 
 import com.s.commerce.application.products.create.CreateProductRequest;
 import com.s.commerce.application.products.edit.EditProductRequest;
+import com.s.commerce.application.products.getById.GetProductDetailsResponse;
 import com.s.commerce.domain.products.entity.Product;
 
 public class ProductMapper {
@@ -18,5 +19,15 @@ public class ProductMapper {
         product.changeCategory(request.category());
 
         return product;
+    }
+
+    public static GetProductDetailsResponse toDetailsResponse(Product product) {
+        return new GetProductDetailsResponse(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getCategory(),
+                product.getPrice()
+        );
     }
 }
