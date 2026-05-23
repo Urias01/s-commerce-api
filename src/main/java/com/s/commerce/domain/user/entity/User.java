@@ -1,38 +1,60 @@
 package com.s.commerce.domain.user.entity;
 
-import java.util.UUID;
-
 import com.s.commerce.domain.common.Auditable;
 import com.s.commerce.domain.user.enums.UserRole;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.s.commerce.domain.user.valueObject.Email;
+import com.s.commerce.domain.user.valueObject.HashedPassword;
+import com.s.commerce.domain.user.valueObject.UserId;
+import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
 @Table(name = "users")
 public class User extends Auditable {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
+    @Getter
+    @EmbeddedId
+    private UserId id;
 
-  private UserRole role;
+    @Column(nullable = false)
+    private String name;
+    @Column(unique = true, nullable = false)
+    private Email email;
+    @Column(nullable = false)
+    private HashedPassword password;
 
-  protected User() {
-  }
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
-  public User(UserRole role) {
-    this.role = role;
-  }
+    protected User() {
+    }
 
-  public UUID getId() {
-    return id;
-  }
+    public User(String name, Email email, HashedPassword password, UserRole role) {
+        this.id = UserId.newId();
+        this.changeName(name);
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
 
-  public UserRole getRole() {
-    return role;
-  }
+    private void validateName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be null or empty");
+        }
+    }
+
+    public void changeName(String name) {
+        validateName(name);
+
+        this.name = name;
+    }
+
+
+    public void changeEmail(Email email) {
+        this.email = email;
+    }
+
+
 }

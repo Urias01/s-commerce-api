@@ -1,17 +1,16 @@
 package com.s.commerce.domain.user.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum UserRole {
   ADMIN("Admin"),
-  USER("Regular User"),
-  GUEST("Guest User");
+  CUSTOMER("Customer");
 
-  private String description;
+  private final String description;
 
   UserRole(String description) {
     this.description = description;
   }
 
-  public String getDescription() {
-    return description;
-  }
 }
