@@ -13,6 +13,7 @@ import com.s.commerce.application.products.list.ListProductQuery;
 import com.s.commerce.application.products.list.ListProductResponse;
 import com.s.commerce.application.products.list.ListProductUseCase;
 import com.s.commerce.domain.products.enums.ProductCategory;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<CreateProductResponse>> createProduct(@RequestBody CreateProductRequest request) {
+    public ResponseEntity<ApiResponse<CreateProductResponse>> createProduct(@RequestBody @Valid CreateProductRequest request) {
         CreateProductResponse response = this.createProductUseCase.execute(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(response));
