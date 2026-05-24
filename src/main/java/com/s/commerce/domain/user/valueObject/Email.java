@@ -1,13 +1,19 @@
 package com.s.commerce.domain.user.valueObject;
 
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public record Email(String value) {
+
+public record Email(@JsonValue String value) {
 
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     private static final Pattern PATTERN = Pattern.compile(EMAIL_REGEX);
 
+    @JsonCreator
     public Email {
         if (!validEmail(value)) {
             throw new IllegalArgumentException("Invalid e-mail");
