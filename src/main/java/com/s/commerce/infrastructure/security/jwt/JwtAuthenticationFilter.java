@@ -20,55 +20,47 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-  private final AntPathMatcher pathMatcher = new AntPathMatcher();
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
-  private static final List<String> PUBLIC_PATHS = List.of(
-      "/api/auth/**", "/api/public/**");
+    private static final List<String> PUBLIC_PATHS = List.of("/api/public/**");
 
-  private final JwtService jwtService;
+    private final JwtService jwtService;
 
-  public JwtAuthenticationFilter(JwtService jwtService) {
-    this.jwtService = jwtService;
-  }
-
-  @Override
-  protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-    String path = request.getRequestURI();
-    return PUBLIC_PATHS.stream()
-        .anyMatch(pattern -> pathMatcher.match(pattern, path));
-  }
-
-  @Override
-  protected void doFilterInternal(
-      HttpServletRequest request,
-      HttpServletResponse response,
-      FilterChain filterChain) throws ServletException, IOException {
-
-    String authHeader = request.getHeader("Authorization");
-
-    if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-      filterChain.doFilter(request, response);
-      return;
+    public JwtAuthenticationFilter(JwtService jwtService) {
+        this.jwtService = jwtService;
     }
 
-    String token = authHeader.substring(7);
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return PUBLIC_PATHS.stream().anyMatch(pattern -> pathMatcher.match(pattern, path));
+    }
 
-    jwtService.extractValidToken(token).ifPresent(claims -> {
-      UUID userId = claims.userId();
-      String role = claims.role();
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-      SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
+        String authHeader = request.getHeader("Authorization");
 
-      UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-          userId,
-          null,
-          List.of(authority));
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-      authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        String token = authHeader.substring(7);
 
-      SecurityContextHolder.getContext().setAuthentication(authToken);
-    });
+        jwtService.extractValidToken(token).ifPresent(claims -> {
+            UUID userId = claims.userId();
+            String role = claims.role();
 
-    filterChain.doFilter(request, response);
-  }
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
+
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userId, null, List.of(authority));
+
+            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+        });
+
+        filterChain.doFilter(request, response);
+    }
 }
