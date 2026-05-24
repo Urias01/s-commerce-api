@@ -11,9 +11,9 @@ import lombok.Getter;
 
 @Entity
 @Table(name = "users")
+@Getter
 public class User extends Auditable {
 
-    @Getter
     @EmbeddedId
     private UserId id;
 
