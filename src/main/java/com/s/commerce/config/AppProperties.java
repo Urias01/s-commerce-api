@@ -17,6 +17,6 @@ public class AppProperties {
   private String dbPassword;
   private String jwtSecret;
   private String jwtIssuer;
-  private String jwtExpirationMs;
+  private Long jwtExpirationMs;
 
 }

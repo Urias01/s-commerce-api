@@ -2,8 +2,9 @@ package com.s.commerce.infrastructure.security.jwt;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
+import com.s.commerce.domain.user.enums.UserRole;
+import com.s.commerce.domain.user.valueObject.UserId;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -49,12 +50,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = authHeader.substring(7);
 
         jwtService.extractValidToken(token).ifPresent(claims -> {
-            UUID userId = claims.userId();
-            String role = claims.role();
+            UserId id = claims.userId();
+            UserRole role = claims.role();
 
             SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
 
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userId, null, List.of(authority));
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(id, null, List.of(authority));
 
             authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 

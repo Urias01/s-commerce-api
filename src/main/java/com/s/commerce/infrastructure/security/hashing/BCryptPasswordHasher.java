@@ -1,5 +1,6 @@
 package com.s.commerce.infrastructure.security.hashing;
 
+import com.s.commerce.domain.user.valueObject.HashedPassword;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.s.commerce.domain.common.security.IPasswordHasher;
@@ -18,7 +19,7 @@ public class BCryptPasswordHasher implements IPasswordHasher {
   }
 
   @Override
-  public boolean isMatch(String rawPassword, String hashedPassword) {
-    return encoder.matches(rawPassword, hashedPassword);
+  public boolean isMatch(String rawPassword, HashedPassword hashedPassword) {
+    return encoder.matches(rawPassword, hashedPassword.value());
   }
 }

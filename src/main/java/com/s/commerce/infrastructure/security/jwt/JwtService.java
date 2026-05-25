@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.s.commerce.domain.user.enums.UserRole;
+import com.s.commerce.domain.user.valueObject.UserId;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
@@ -30,9 +32,9 @@ public class JwtService implements ITokenService {
           .build()
           .verify(token);
 
-      UUID userId = UUID.fromString(decoded.getSubject());
+      UserId userId = new UserId(UUID.fromString(decoded.getSubject()));
 
-      return Optional.of(new TokenClaims(userId, decoded.getClaim("role").asString()));
+      return Optional.of(new TokenClaims(userId, decoded.getClaim("role").as(UserRole.class)));
 
     } catch (Exception e) {
       return Optional.empty();
@@ -40,17 +42,17 @@ public class JwtService implements ITokenService {
   }
 
   @Override
-  public String generateToken(UUID userId, String role) {
+  public String generateToken(UserId id, UserRole role) {
     return JWT.create()
         .withIssuer(appProperties.getJwtIssuer())
-        .withSubject(userId.toString())
+        .withSubject(id.value().toString())
         .withIssuedAt(new Date())
-        .withExpiresAt(new Date(System.currentTimeMillis() + Long.parseLong(appProperties.getJwtExpirationMs())))
-        .withClaim("role", role)
+        .withExpiresAt(new Date(System.currentTimeMillis() + appProperties.getJwtExpirationMs()))
+        .withClaim("role", role.name())
         .sign(algorithm);
   }
 
-  public record TokenClaims(UUID userId, String role) {
+  public record TokenClaims(UserId userId, UserRole role) {
   }
 
 }

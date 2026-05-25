@@ -1,9 +1,10 @@
 package com.s.commerce.domain.common.security;
 
-import java.util.UUID;
+import com.s.commerce.domain.user.enums.UserRole;
+import com.s.commerce.domain.user.valueObject.UserId;
 
 public interface ITokenService {
 
-  String generateToken(UUID userId, String userRole);
+  String generateToken(UserId id, UserRole userRole);
 
 }
