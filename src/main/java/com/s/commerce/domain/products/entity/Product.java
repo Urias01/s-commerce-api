@@ -2,7 +2,7 @@ package com.s.commerce.domain.products.entity;
 
 import com.s.commerce.domain.common.Auditable;
 import com.s.commerce.domain.products.enums.ProductCategory;
-import com.s.commerce.domain.products.valueObject.Money;
+import com.s.commerce.domain.common.valueObject.Money;
 
 import com.s.commerce.domain.products.valueObject.ProductId;
 import jakarta.persistence.*;

@@ -6,7 +6,7 @@ import com.s.commerce.application.products.create.CreateProductUseCase;
 import com.s.commerce.domain.products.entity.Product;
 import com.s.commerce.domain.products.enums.ProductCategory;
 import com.s.commerce.domain.products.repositories.IProductRepository;
-import com.s.commerce.domain.products.valueObject.Money;
+import com.s.commerce.domain.common.valueObject.Money;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.util.Currency;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,7 +34,7 @@ public class CreateProductTest {
     @Test
     @DisplayName("Should be able to create successfully a product")
     public void shouldBeAbleToCreateSuccessfullyAProduct() {
-        Money price = new Money(BigDecimal.valueOf(95.9), Currency.getInstance("BRL"));
+        Money price = new Money(BigDecimal.valueOf(95.9));
 
         CreateProductRequest request = new CreateProductRequest("Strawberry Cake", "A wonderful strawberry cake", price, ProductCategory.CAKE);
 

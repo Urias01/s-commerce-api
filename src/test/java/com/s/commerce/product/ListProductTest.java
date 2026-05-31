@@ -9,7 +9,7 @@ import com.s.commerce.domain.common.PageResult;
 import com.s.commerce.domain.products.entity.Product;
 import com.s.commerce.domain.products.enums.ProductCategory;
 import com.s.commerce.domain.products.repositories.IProductRepository;
-import com.s.commerce.domain.products.valueObject.Money;
+import com.s.commerce.domain.common.valueObject.Money;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.util.Currency;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,7 +36,7 @@ public class ListProductTest {
     @Test
     @DisplayName("Should be able to get product list")
     public void shouldBeAbleToGetProductList() {
-        Money price = new Money(BigDecimal.valueOf(60.5), Currency.getInstance("BRL"));
+        Money price = new Money(BigDecimal.valueOf(60.5));
         Product product = new Product("Cake", "description cake", price, ProductCategory.CAKE);
 
         PageResult<Product> pageResult = new PageResult<>(List.of(product), 1, 0, 10, 1);

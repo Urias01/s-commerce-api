@@ -5,7 +5,7 @@ import com.s.commerce.application.products.getById.GetProductDetailsUseCase;
 import com.s.commerce.domain.products.entity.Product;
 import com.s.commerce.domain.products.enums.ProductCategory;
 import com.s.commerce.domain.products.repositories.IProductRepository;
-import com.s.commerce.domain.products.valueObject.Money;
+import com.s.commerce.domain.common.valueObject.Money;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.util.Currency;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,7 +32,7 @@ public class GetProductDetailsTest {
     @Test
     @DisplayName("Should be able to get product details")
     public void shouldBeAbleToGetProductDetails() {
-        Money price = new Money(BigDecimal.valueOf(95.9), Currency.getInstance("BRL"));
+        Money price = new Money(BigDecimal.valueOf(95.9));
         Product product = new Product("Lemon Cake", "An incredible lemon cake", price, ProductCategory.CAKE);
 
         when(productRepository.findById(product.getId())).thenReturn(Optional.of(product));
