@@ -8,6 +8,7 @@ import com.s.commerce.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,34 +21,38 @@ public class Order extends Auditable {
     @EmbeddedId
     private OrderId id;
 
-    private String description;
-    private int itemsQty;
     private Money total;
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+    private LocalDate orderDate;
+    private LocalDate deliveryDate;
     @OneToMany
     private Set<OrderItems> items = new HashSet<>();
     @ManyToOne(targetEntity = User.class, optional = false)
     private User customer;
 
-    public Order(String description, OrderItems item, User customer) {
+    public Order(OrderItems item, User customer, LocalDate orderDate, LocalDate deliveryDate) {
         this.id = OrderId.newId();
-        this.description = description;
+
         this.status = OrderStatus.PENDING;
         this.items = new HashSet<>();
         this.total = Money.ZERO;
         this.customer = customer;
+        this.orderDate = orderDate;
+        this.deliveryDate = deliveryDate;
 
         this.addItem(item);
     }
 
-    public Order(String description, List<OrderItems> items, User customer) {
+    public Order(List<OrderItems> items, User customer, LocalDate orderDate, LocalDate deliveryDate) {
         this.id = OrderId.newId();
-        this.description = description;
+
         this.status = OrderStatus.PENDING;
         this.items = new HashSet<>();
         this.total = Money.ZERO;
         this.customer = customer;
+        this.orderDate = orderDate;
+        this.deliveryDate = deliveryDate;
 
         items.forEach(this::addItem);
     }
@@ -58,7 +63,6 @@ public class Order extends Auditable {
 
         this.items.add(item);
         this.total = this.total.add(item.getPrice());
-        this.itemsQty++;
     }
 
     public void removeItem(OrderItems item) {
@@ -67,7 +71,6 @@ public class Order extends Auditable {
 
         this.items.remove(item);
         this.total.subtract(item.getPrice());
-        this.itemsQty--;
     }
 
     public void changeStatus(OrderStatus next) {
