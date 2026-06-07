@@ -1,6 +1,7 @@
 package com.s.commerce.domain.cart.entities;
 
 import com.s.commerce.domain.cart.valueObjects.CartId;
+import com.s.commerce.domain.cart.valueObjects.CartItemId;
 import com.s.commerce.domain.common.valueObject.Money;
 import com.s.commerce.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -34,7 +35,12 @@ public class Cart {
         this.items.add(item);
     }
 
-    public void removeItem(CartItems item) {
+    public void removeItem(CartItemId itemId) {
+        CartItems item = this.items.stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Item not found"));
+
         this.items.remove(item);
     }
 
