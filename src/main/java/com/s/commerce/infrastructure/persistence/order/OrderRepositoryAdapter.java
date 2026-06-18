@@ -1,5 +1,6 @@
 package com.s.commerce.infrastructure.persistence.order;
 
+import com.s.commerce.domain.order.entity.Order;
 import com.s.commerce.domain.order.repositories.IOrderRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +11,10 @@ public class OrderRepositoryAdapter implements IOrderRepository {
 
     public OrderRepositoryAdapter(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
+    }
+
+    @Override
+    public Order create(Order order) {
+        return this.orderRepository.save(order);
     }
 }

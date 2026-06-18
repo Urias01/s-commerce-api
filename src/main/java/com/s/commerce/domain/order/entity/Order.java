@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,26 +26,30 @@ public class Order extends Auditable {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
     private LocalDate orderDate;
-    private LocalDate deliveryDate;
+    private LocalDateTime scheduledDeliveryDate;
+    private LocalDateTime deliveredAt;
     @OneToMany
     private Set<OrderItems> items = new HashSet<>();
     @ManyToOne(targetEntity = User.class, optional = false)
     private User customer;
 
-    public Order(OrderItems item, User customer, LocalDate orderDate, LocalDate deliveryDate) {
+    public Order(User customer, LocalDate orderDate, LocalDateTime scheduledDeliveryDate) {
+        super();
         this.id = OrderId.newId();
 
-        this.status = OrderStatus.PENDING;
+        this.status = OrderStatus.WAITING_PAYMENT;
         this.items = new HashSet<>();
         this.total = Money.ZERO;
         this.customer = customer;
         this.orderDate = orderDate;
-        this.deliveryDate = deliveryDate;
-
-        this.addItem(item);
+        this.scheduledDeliveryDate = scheduledDeliveryDate;
     }
 
-    public Order(List<OrderItems> items, User customer, LocalDate orderDate, LocalDate deliveryDate) {
+    protected Order() {
+        super();
+    }
+
+    public Order(List<OrderItems> items, User customer, LocalDate orderDate, LocalDateTime scheduledDeliveryDate) {
         this.id = OrderId.newId();
 
         this.status = OrderStatus.PENDING;
@@ -52,7 +57,7 @@ public class Order extends Auditable {
         this.total = Money.ZERO;
         this.customer = customer;
         this.orderDate = orderDate;
-        this.deliveryDate = deliveryDate;
+        this.scheduledDeliveryDate = scheduledDeliveryDate;
 
         items.forEach(this::addItem);
     }
@@ -79,5 +84,13 @@ public class Order extends Auditable {
         }
 
         this.status = next;
+    }
+
+    public void markAsDelivered() {
+        if (this.status != OrderStatus.OUT_FOR_DELIVERY) {
+            throw new IllegalStateException("Order is not out for delivery");
+        }
+        this.status = OrderStatus.DELIVERED;
+        this.deliveredAt = LocalDateTime.now();
     }
 }
