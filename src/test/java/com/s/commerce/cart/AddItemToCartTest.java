@@ -1,8 +1,8 @@
 package com.s.commerce.cart;
 
-import com.s.commerce.application.cart.AddItem.AddItemToCartRequest;
-import com.s.commerce.application.cart.AddItem.AddItemToCartResponse;
-import com.s.commerce.application.cart.AddItem.AddItemToCartUseCase;
+import com.s.commerce.application.cart.addItem.AddItemToCartRequest;
+import com.s.commerce.application.cart.addItem.AddItemToCartResponse;
+import com.s.commerce.application.cart.addItem.AddItemToCartUseCase;
 import com.s.commerce.application.cart.common.CartItemRequest;
 import com.s.commerce.domain.cart.entities.Cart;
 import com.s.commerce.domain.cart.entities.CartItems;

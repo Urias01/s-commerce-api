@@ -1,4 +1,4 @@
-package com.s.commerce.application.cart.AddItem;
+package com.s.commerce.application.cart.addItem;
 
 import com.s.commerce.domain.cart.valueObjects.CartId;
 
