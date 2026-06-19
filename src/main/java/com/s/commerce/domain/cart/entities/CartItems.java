@@ -17,7 +17,7 @@ public class CartItems {
 
     private int quantity;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
@@ -45,6 +45,14 @@ public class CartItems {
             throw new InvalidOperationException("Sugerir remover produto do carrinho");
         }
         this.quantity--;
+    }
+
+    public boolean isSameProduct(CartItems other) {
+        return this.product.getId().equals(other.getProduct().getId());
+    }
+
+    public void increaseQuantity(int amount) {
+        this.quantity += amount;
     }
 
     public Money getPrice() {

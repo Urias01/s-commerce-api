@@ -3,6 +3,7 @@ package com.s.commerce.domain.cart.entities;
 import com.s.commerce.domain.cart.exceptions.NotFoundCartItemException;
 import com.s.commerce.domain.cart.valueObjects.CartId;
 import com.s.commerce.domain.cart.valueObjects.CartItemId;
+import com.s.commerce.domain.common.Auditable;
 import com.s.commerce.domain.common.valueObject.Money;
 import com.s.commerce.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -14,7 +15,7 @@ import java.util.Set;
 @Entity
 @Table(name = "carts")
 @Getter
-public class Cart {
+public class Cart extends Auditable {
 
     @EmbeddedId
     private CartId id;
@@ -26,14 +27,25 @@ public class Cart {
     @JoinColumn(name = "customer_id")
     private User customer;
 
+    protected Cart() {
+        super();
+    }
+
     public Cart(User customer) {
+        super();
         this.id = CartId.newId();
 
         this.customer = customer;
     }
 
     public void addItem(CartItems item) {
-        this.items.add(item);
+        this.items.stream()
+                .filter(existing -> existing.isSameProduct(item))
+                .findFirst()
+                .ifPresentOrElse(
+                        existing -> existing.increaseQuantity(item.getQuantity()),
+                        () -> this.items.add(item)
+                );
     }
 
     public void removeItem(CartItemId itemId) {
