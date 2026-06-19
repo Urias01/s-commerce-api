@@ -2,6 +2,7 @@ package com.s.commerce.application.products.getById;
 
 import com.s.commerce.application.products.mappers.ProductMapper;
 import com.s.commerce.domain.products.entity.Product;
+import com.s.commerce.domain.products.exceptions.ProductNotFoundException;
 import com.s.commerce.domain.products.repositories.IProductRepository;
 import com.s.commerce.domain.products.valueObject.ProductId;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class GetProductDetailsUseCase {
 
     public GetProductDetailsResponse execute(ProductId productId) {
         Product product = this.productRepository.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+                .orElseThrow(ProductNotFoundException::new);
 
         return ProductMapper.toDetailsResponse(product);
     }

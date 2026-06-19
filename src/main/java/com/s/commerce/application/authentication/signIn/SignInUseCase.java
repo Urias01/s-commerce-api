@@ -1,6 +1,7 @@
 package com.s.commerce.application.authentication.signIn;
 
 import com.s.commerce.config.AppProperties;
+import com.s.commerce.domain.common.exceptions.InvalidArgumentException;
 import com.s.commerce.domain.common.security.IPasswordHasher;
 import com.s.commerce.domain.common.security.ITokenService;
 import com.s.commerce.domain.user.entity.User;
@@ -27,10 +28,10 @@ public class SignInUseCase {
     public SignInResponse execute(SignInRequest request) {
 
         User user = this.userRepository.findByEmail(request.email())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid e-mail or password"));
+                .orElseThrow(() -> new InvalidArgumentException("Invalid e-mail or password"));
 
         if (!passwordHasher.isMatch(request.password(), user.getPassword())) {
-            throw new IllegalArgumentException("Invalid e-mail or password");
+            throw new InvalidArgumentException("Invalid e-mail or password");
         }
 
         String token = this.tokenService.generateToken(user.getId(), user.getRole());

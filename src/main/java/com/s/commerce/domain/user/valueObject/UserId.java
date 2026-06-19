@@ -1,6 +1,7 @@
 package com.s.commerce.domain.user.valueObject;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.s.commerce.domain.common.exceptions.InvalidArgumentException;
 import jakarta.persistence.Embeddable;
 
 import java.io.Serializable;
@@ -14,7 +15,7 @@ public record UserId(
 
     public UserId {
         if (value == null) {
-            throw new IllegalArgumentException("UserId cannot be null");
+            throw new InvalidArgumentException("UserId cannot be null");
         }
     }
 

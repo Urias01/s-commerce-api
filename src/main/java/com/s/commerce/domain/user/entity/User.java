@@ -1,8 +1,10 @@
 package com.s.commerce.domain.user.entity;
 
 import com.s.commerce.domain.common.Auditable;
+import com.s.commerce.domain.common.exceptions.InvalidArgumentException;
 import com.s.commerce.domain.user.enums.UserRole;
 
+import com.s.commerce.domain.user.exceptions.InvalidUserDataException;
 import com.s.commerce.domain.user.valueObject.Email;
 import com.s.commerce.domain.user.valueObject.HashedPassword;
 import com.s.commerce.domain.user.valueObject.UserId;
@@ -41,7 +43,7 @@ public class User extends Auditable {
 
     private void validateName(String name) {
         if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be null or empty");
+            throw new InvalidUserDataException("Name cannot be null or empty");
         }
     }
 

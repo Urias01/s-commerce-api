@@ -1,6 +1,7 @@
 package com.s.commerce.domain.order.entity;
 
 import com.s.commerce.domain.common.Auditable;
+import com.s.commerce.domain.common.exceptions.InvalidOperationException;
 import com.s.commerce.domain.common.valueObject.Money;
 import com.s.commerce.domain.order.enums.OrderStatus;
 import com.s.commerce.domain.order.valueObject.OrderId;
@@ -64,7 +65,7 @@ public class Order extends Auditable {
 
     public void addItem(OrderItems item) {
         if (status.isTerminal())
-            throw new IllegalArgumentException("..."); // TODO: Create Domain Exception
+            throw new InvalidOperationException("Cannot add item to an order with terminal status" + status);
 
         this.items.add(item);
         this.total = this.total.add(item.getPrice());
@@ -72,7 +73,7 @@ public class Order extends Auditable {
 
     public void removeItem(OrderItems item) {
         if (status.isTerminal())
-            throw new IllegalArgumentException("..."); // TODO: Create Domain Exception
+            throw new InvalidOperationException("Cannot remove item from an order with terminal status: " + status);
 
         this.items.remove(item);
         this.total.subtract(item.getPrice());
@@ -80,7 +81,7 @@ public class Order extends Auditable {
 
     public void changeStatus(OrderStatus next) {
         if (!status.canTransitionTo(next)) {
-            throw new IllegalArgumentException("The status cannot be changed to " + next);
+            throw new InvalidOperationException("The status cannot be changed to " + next);
         }
 
         this.status = next;
@@ -88,7 +89,7 @@ public class Order extends Auditable {
 
     public void markAsDelivered() {
         if (this.status != OrderStatus.OUT_FOR_DELIVERY) {
-            throw new IllegalStateException("Order is not out for delivery");
+            throw new InvalidOperationException("Order is not out for delivery");
         }
         this.status = OrderStatus.DELIVERED;
         this.deliveredAt = LocalDateTime.now();

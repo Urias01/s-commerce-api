@@ -1,8 +1,10 @@
 package com.s.commerce.application.cart.removeItem;
 
 import com.s.commerce.domain.cart.entities.Cart;
+import com.s.commerce.domain.cart.exceptions.CartNotFoundException;
 import com.s.commerce.domain.cart.repositories.ICartRepository;
 import com.s.commerce.domain.user.entity.User;
+import com.s.commerce.domain.user.exceptions.CustomerNotFoundException;
 import com.s.commerce.domain.user.repository.IUserRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +21,10 @@ public class RemoveItemFromCartUseCase {
 
     public RemoveItemFromCartResponse execute(RemoveItemFromCartRequest request) {
         User customer = this.userRepository.findById(request.customerId())
-                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+                .orElseThrow(CustomerNotFoundException::new);
 
         Cart cart = this.cartRepository.findByCustomer(customer)
-                .orElseThrow(() -> new IllegalArgumentException("Cart not found"));
+                .orElseThrow(CartNotFoundException::new);
 
         cart.removeItem(request.itemId());
 

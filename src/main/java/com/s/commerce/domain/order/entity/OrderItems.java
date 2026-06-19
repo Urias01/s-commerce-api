@@ -1,6 +1,7 @@
 package com.s.commerce.domain.order.entity;
 
 import com.s.commerce.domain.common.Auditable;
+import com.s.commerce.domain.common.exceptions.InvalidOperationException;
 import com.s.commerce.domain.common.valueObject.Money;
 import com.s.commerce.domain.order.valueObject.OrderItemId;
 import com.s.commerce.domain.products.entity.Product;
@@ -37,7 +38,7 @@ public class OrderItems extends Auditable {
 
     public void removeItem() {
         if (this.quantity <= 0) {
-            throw new IllegalArgumentException("Is not possible remove an item");
+            throw new InvalidOperationException("Is not possible remove an item");
         }
 
         this.quantity--;

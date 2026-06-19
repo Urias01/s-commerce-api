@@ -4,6 +4,7 @@ import com.s.commerce.domain.common.Auditable;
 import com.s.commerce.domain.products.enums.ProductCategory;
 import com.s.commerce.domain.common.valueObject.Money;
 
+import com.s.commerce.domain.products.exceptions.InvalidProductDataException;
 import com.s.commerce.domain.products.valueObject.ProductId;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -38,7 +39,7 @@ public class Product extends Auditable {
 
     private void validateName(String name) {
         if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be null or empty");
+            throw new InvalidProductDataException("Name cannot be null or empty");
         }
     }
 
@@ -54,7 +55,7 @@ public class Product extends Auditable {
 
     public void changePrice(Money newPrice) {
         if (newPrice == null) {
-            throw new IllegalArgumentException("Price cannot be null");
+            throw new InvalidProductDataException("Price cannot be null");
         }
 
         if (this.price.equals(newPrice)) {
@@ -66,7 +67,7 @@ public class Product extends Auditable {
 
     public void changeCategory(ProductCategory newCategory) {
         if (newCategory == null) {
-            throw new IllegalArgumentException("Category cannot be null");
+            throw new InvalidProductDataException("Category cannot be null");
         }
 
         if (this.category == newCategory) {

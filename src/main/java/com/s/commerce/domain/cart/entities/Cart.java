@@ -1,5 +1,6 @@
 package com.s.commerce.domain.cart.entities;
 
+import com.s.commerce.domain.cart.exceptions.NotFoundCartItemException;
 import com.s.commerce.domain.cart.valueObjects.CartId;
 import com.s.commerce.domain.cart.valueObjects.CartItemId;
 import com.s.commerce.domain.common.valueObject.Money;
@@ -39,7 +40,7 @@ public class Cart {
         CartItems item = this.items.stream()
                 .filter(i -> i.getId().equals(itemId))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Item not found"));
+                .orElseThrow(() -> new NotFoundCartItemException("Item not found"));
 
         this.items.remove(item);
     }

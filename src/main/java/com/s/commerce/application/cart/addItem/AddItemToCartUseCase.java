@@ -5,8 +5,10 @@ import com.s.commerce.domain.cart.entities.Cart;
 import com.s.commerce.domain.cart.entities.CartItems;
 import com.s.commerce.domain.cart.repositories.ICartRepository;
 import com.s.commerce.domain.products.entity.Product;
+import com.s.commerce.domain.products.exceptions.ProductNotFoundException;
 import com.s.commerce.domain.products.repositories.IProductRepository;
 import com.s.commerce.domain.user.entity.User;
+import com.s.commerce.domain.user.exceptions.CustomerNotFoundException;
 import com.s.commerce.domain.user.repository.IUserRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +28,13 @@ public class AddItemToCartUseCase {
     public AddItemToCartResponse execute(AddItemToCartRequest request) {
 
         User customer = this.userRepository.findById(request.customerId())
-                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+                .orElseThrow(CustomerNotFoundException::new);
 
         Cart cart = this.cartRepository.findByCustomer(customer)
                 .orElseGet(() -> this.cartRepository.create(new Cart(customer)));
 
         Product product = this.productRepository.findById(request.item().productId())
-                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+                .orElseThrow(ProductNotFoundException::new);
 
         CartItems item = CartItemMapper.toEntity(request.item(), cart, product);
 

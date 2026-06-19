@@ -3,6 +3,7 @@ package com.s.commerce.domain.user.valueObject;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.s.commerce.domain.user.exceptions.InvalidUserDataException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,7 +17,7 @@ public record Email(@JsonValue String value) {
     @JsonCreator
     public Email {
         if (!validEmail(value)) {
-            throw new IllegalArgumentException("Invalid e-mail");
+            throw new InvalidUserDataException("Invalid e-mail");
         }
 
         value = value.trim().toLowerCase();

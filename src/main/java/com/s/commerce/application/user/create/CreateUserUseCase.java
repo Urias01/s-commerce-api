@@ -1,6 +1,7 @@
 package com.s.commerce.application.user.create;
 
 import com.s.commerce.application.user.mappers.UserMapper;
+import com.s.commerce.domain.common.exceptions.InvalidArgumentException;
 import com.s.commerce.domain.common.security.IPasswordHasher;
 import com.s.commerce.domain.user.entity.User;
 import com.s.commerce.domain.user.repository.IUserRepository;
@@ -21,11 +22,11 @@ public class CreateUserUseCase {
     public CreateUserResponse execute(CreateUserRequest request) {
 
         if (userRepository.findByEmail(request.email()).isPresent()) {
-            throw new IllegalArgumentException("User already exists");
+            throw new InvalidArgumentException("User already exists");
         }
 
         if(!request.password().equals(request.confirmPassword())) {
-            throw new IllegalArgumentException("Passwords not match");
+            throw new InvalidArgumentException("Passwords not match");
         }
 
         HashedPassword password = new HashedPassword(passwordHasher.hash(request.password()));

@@ -1,6 +1,7 @@
 package com.s.commerce.domain.products.valueObject;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.s.commerce.domain.common.exceptions.InvalidArgumentException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
@@ -16,7 +17,7 @@ public record ProductId(
 
     public ProductId {
         if (value == null) {
-            throw new IllegalArgumentException("ProductId cannot be null");
+            throw new InvalidArgumentException("ProductId cannot be null");
         }
     }
 

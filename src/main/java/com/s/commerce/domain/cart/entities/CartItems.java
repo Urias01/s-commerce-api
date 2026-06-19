@@ -1,6 +1,7 @@
 package com.s.commerce.domain.cart.entities;
 
 import com.s.commerce.domain.cart.valueObjects.CartItemId;
+import com.s.commerce.domain.common.exceptions.InvalidOperationException;
 import com.s.commerce.domain.common.valueObject.Money;
 import com.s.commerce.domain.products.entity.Product;
 import jakarta.persistence.*;
@@ -41,7 +42,7 @@ public class CartItems {
 
     public void minusQuantity() {
         if (this.quantity <= 1) {
-            throw new IllegalArgumentException("Sugerir remover produto do carrinho");
+            throw new InvalidOperationException("Sugerir remover produto do carrinho");
         }
         this.quantity--;
     }
