@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 @Embeddable
-public record Money(@JsonValue  BigDecimal amount) {
+public record Money(@JsonValue BigDecimal amount) {
 
     private static final int SCALE = 2;
     private static final RoundingMode ROUNDING = RoundingMode.HALF_EVEN;

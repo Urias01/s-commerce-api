@@ -62,7 +62,7 @@ public class CartController {
     @PostMapping("/checkout")
     public ResponseEntity<ApiResponse<CheckOutCartResponse>> checkout(@RequestBody CheckoutCartHttpRequest httpRequest) {
         UserId customerId = authenticatedUser.getCurrentUserId();
-        CheckOutCartRequest request = new CheckOutCartRequest(httpRequest.cartItemIdList(), httpRequest.scheduledDeliveryDate(), customerId);
+        CheckOutCartRequest request = new CheckOutCartRequest(httpRequest.cartItems(), httpRequest.scheduledDeliveryDate(), customerId);
 
         CheckOutCartResponse response = this.checkOutCartUseCase.execute(request);
 

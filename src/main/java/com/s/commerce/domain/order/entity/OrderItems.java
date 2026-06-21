@@ -20,11 +20,20 @@ public class OrderItems extends Auditable {
 
     private Money price;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
+
+    protected OrderItems() {
+        super();
+    }
+
     public OrderItems(int quantity, Money price, Product product) {
+        super();
         this.id = OrderItemId.newId();
 
         this.quantity = quantity;
@@ -42,6 +51,10 @@ public class OrderItems extends Auditable {
         }
 
         this.quantity--;
+    }
+
+    void belongsTo(Order order) {
+        this.order = order;
     }
 
     public void definePrice(Money value) {

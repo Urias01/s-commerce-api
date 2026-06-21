@@ -29,7 +29,7 @@ public class Order extends Auditable {
     private LocalDate orderDate;
     private LocalDateTime scheduledDeliveryDate;
     private LocalDateTime deliveredAt;
-    @OneToMany
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderItems> items = new HashSet<>();
     @ManyToOne(targetEntity = User.class, optional = false)
     private User customer;
@@ -67,6 +67,7 @@ public class Order extends Auditable {
         if (status.isTerminal())
             throw new InvalidOperationException("Cannot add item to an order with terminal status" + status);
 
+        item.belongsTo(this);
         this.items.add(item);
         this.total = this.total.add(item.getPrice());
     }
@@ -76,7 +77,8 @@ public class Order extends Auditable {
             throw new InvalidOperationException("Cannot remove item from an order with terminal status: " + status);
 
         this.items.remove(item);
-        this.total.subtract(item.getPrice());
+        item.belongsTo(null);
+        this.total = this.total.subtract(item.getPrice());
     }
 
     public void changeStatus(OrderStatus next) {

@@ -1,6 +1,7 @@
 package com.s.commerce.domain.cart.entities;
 
 import com.s.commerce.domain.cart.valueObjects.CartItemId;
+import com.s.commerce.domain.common.Auditable;
 import com.s.commerce.domain.common.exceptions.InvalidOperationException;
 import com.s.commerce.domain.common.valueObject.Money;
 import com.s.commerce.domain.products.entity.Product;
@@ -10,7 +11,7 @@ import lombok.Getter;
 @Entity
 @Table(name = "cart_items")
 @Getter
-public class CartItems {
+public class CartItems extends Auditable {
 
     @EmbeddedId
     private CartItemId id;
@@ -26,9 +27,11 @@ public class CartItems {
     private Cart cart;
 
     protected CartItems() {
+        super();
     }
 
     public CartItems(int quantity, Product product, Cart cart) {
+        super();
         this.id = CartItemId.newId();
 
         this.quantity = quantity;
