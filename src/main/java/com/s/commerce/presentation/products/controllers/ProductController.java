@@ -16,6 +16,7 @@ import com.s.commerce.domain.products.enums.ProductCategory;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -38,6 +39,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<CreateProductResponse>> createProduct(@RequestBody @Valid CreateProductRequest request) {
         CreateProductResponse response = this.createProductUseCase.execute(request);
 

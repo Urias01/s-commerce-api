@@ -53,6 +53,9 @@ public class User extends Auditable {
         this.name = name;
     }
 
+    public static User createAdmin(String name, Email email, HashedPassword hashedPassword) {
+        return new User(name, email, hashedPassword, UserRole.ADMIN);
+    }
 
     public void changeEmail(Email email) {
         this.email = email;

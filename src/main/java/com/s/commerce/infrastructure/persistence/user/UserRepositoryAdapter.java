@@ -33,4 +33,9 @@ public class UserRepositoryAdapter implements IUserRepository {
         return userRepository.save(user);
     }
 
+    @Override
+    public boolean existsByEmail(Email email) {
+        return this.userRepository.existsByEmail(email);
+    }
+
 }

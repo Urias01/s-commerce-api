@@ -1,5 +1,6 @@
 package com.s.commerce.config;
 
+import com.s.commerce.domain.user.valueObject.Email;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,5 +19,8 @@ public class AppProperties {
   private String jwtSecret;
   private String jwtIssuer;
   private Long jwtExpirationMs;
+  private String adminName;
+  private Email adminEmail;
+  private String adminPassword;
 
 }

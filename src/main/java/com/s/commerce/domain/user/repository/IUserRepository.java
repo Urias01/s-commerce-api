@@ -11,5 +11,6 @@ public interface IUserRepository {
   Optional<User> findById(UserId userId);
   Optional<User> findByEmail(Email email);
   User create(User user);
+  boolean existsByEmail(Email email);
 
 }
