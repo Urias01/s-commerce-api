@@ -47,6 +47,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<EditProductResponse>> editProduct(@PathVariable UUID productId, @RequestBody EditProductRequest request) {
         EditProductResponse response = this.editProductUseCase.execute(productId, request);
 
