@@ -13,13 +13,12 @@ import com.s.commerce.application.products.list.ListProductQuery;
 import com.s.commerce.application.products.list.ListProductResponse;
 import com.s.commerce.application.products.list.ListProductUseCase;
 import com.s.commerce.domain.products.enums.ProductCategory;
+import com.s.commerce.domain.products.valueObject.ProductId;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/products")
@@ -48,7 +47,7 @@ public class ProductController {
 
     @PutMapping("/{productId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse<EditProductResponse>> editProduct(@PathVariable UUID productId, @RequestBody EditProductRequest request) {
+    public ResponseEntity<ApiResponse<EditProductResponse>> editProduct(@PathVariable ProductId productId, @RequestBody EditProductRequest request) {
         EditProductResponse response = this.editProductUseCase.execute(productId, request);
 
         return ResponseEntity.ok().body(ApiResponse.success(response));
