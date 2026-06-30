@@ -76,6 +76,28 @@ docker compose up -d
 ./mvnw spring-boot:run
 ```
 
+## Variáveis de ambiente
+
+A aplicação espera as seguintes variáveis de ambiente. No IntelliJ, configure-as em
+**Run > Edit Configurations > Environment variables** (formato `CHAVE=valor;CHAVE2=valor2`).
+
+| Variável | Descrição | Exemplo |
+|---|---|---|
+| `APP_ADMIN_EMAIL` | E-mail do admin seedado na inicialização | `admin@scommerce.com` |
+| `APP_ADMIN_NAME` | Nome do admin seedado | `Admin` |
+| `APP_ADMIN_PASSWORD` | Senha do admin seedado | `changeme123` |
+| `APP_DB_HOST` | Host do PostgreSQL | `localhost` |
+| `APP_DB_PORT` | Porta do PostgreSQL | `5432` |
+| `APP_DB_NAME` | Nome do banco de dados | `scommerce` |
+| `APP_DB_USER` | Usuário do banco | `user` |
+| `APP_DB_PASSWORD` | Senha do banco | `password` |
+| `APP_JWT_SECRET` | Segredo usado para assinar o JWT — gere um valor próprio e forte | — |
+| `APP_JWT_ISSUER` | Issuer do token JWT | `s.commerce` |
+| `APP_JWT_EXPIRATION_MS` | Tempo de expiração do token em milissegundos | `3600000` |
+| `SPRING_PROFILES_ACTIVE` | Profile ativo do Spring | `dev` |
+
+> **Atenção:** nunca commite valores reais de `APP_JWT_SECRET` ou senhas de produção. Os valores acima são apenas exemplos para ambiente de desenvolvimento local.
+
 A API estará disponível em `http://localhost:8080`, com a documentação Swagger em `http://localhost:8080/swagger-ui.html`.
 
 ## Aprendizados documentados
