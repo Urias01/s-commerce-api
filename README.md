@@ -10,7 +10,10 @@ O sistema simula a operação de uma confeitaria que vende produtos sob encomend
 
 ## Arquitetura
 
+
 O projeto segue Clean Architecture, com dependências sempre apontando para dentro — o domínio não conhece infraestrutura nem apresentação.
+
+![img.png](img.png)
 
 ```
 src/main/java/com/s/commerce/
