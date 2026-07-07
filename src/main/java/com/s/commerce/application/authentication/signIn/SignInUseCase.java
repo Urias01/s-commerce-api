@@ -6,8 +6,12 @@ import com.s.commerce.domain.common.security.IPasswordHasher;
 import com.s.commerce.domain.common.security.ITokenService;
 import com.s.commerce.domain.user.entity.User;
 import com.s.commerce.domain.user.repository.IUserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
+@Slf4j
 @Service
 public class SignInUseCase {
 
@@ -26,7 +30,7 @@ public class SignInUseCase {
     }
 
     public SignInResponse execute(SignInRequest request) {
-
+        log.info("Starting authentication");
         User user = this.userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new InvalidArgumentException("Invalid e-mail or password"));
 
@@ -36,6 +40,7 @@ public class SignInUseCase {
 
         String token = this.tokenService.generateToken(user.getId(), user.getRole());
 
+        log.info("Authentication successful. userId={}", user.getId());
         return new SignInResponse(token, appProperties.getJwtExpirationMs());
     }
 }

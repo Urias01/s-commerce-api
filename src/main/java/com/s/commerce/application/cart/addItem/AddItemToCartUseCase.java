@@ -10,8 +10,10 @@ import com.s.commerce.domain.products.repositories.IProductRepository;
 import com.s.commerce.domain.user.entity.User;
 import com.s.commerce.domain.user.exceptions.CustomerNotFoundException;
 import com.s.commerce.domain.user.repository.IUserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class AddItemToCartUseCase {
 
@@ -26,21 +28,28 @@ public class AddItemToCartUseCase {
     }
 
     public AddItemToCartResponse execute(AddItemToCartRequest request) {
-
+        log.info("Starting add item to cart, itemId={}", request.item().productId());
         User customer = this.userRepository.findById(request.customerId())
-                .orElseThrow(CustomerNotFoundException::new);
+                .orElseThrow( () -> {
+                    log.warn("Customer not found, customerId={}", request.customerId());
+                    return new CustomerNotFoundException();
+                });
 
         Cart cart = this.cartRepository.findByCustomer(customer)
                 .orElseGet(() -> this.cartRepository.create(new Cart(customer)));
 
         Product product = this.productRepository.findById(request.item().productId())
-                .orElseThrow(ProductNotFoundException::new);
+                .orElseThrow(() -> {
+                    log.warn("Product not found, productId={}", request.item().productId());
+                    return new ProductNotFoundException();
+                });
 
         CartItems item = CartItemMapper.toEntity(request.item(), cart, product);
 
         cart.addItem(item);
 
         Cart savedCart = cartRepository.update(cart);
+        log.info("Item add to cart successful. cartId={}", cart.getId());
         return new AddItemToCartResponse(savedCart.getId());
     }
 }

@@ -6,8 +6,10 @@ import com.s.commerce.domain.common.security.IPasswordHasher;
 import com.s.commerce.domain.user.entity.User;
 import com.s.commerce.domain.user.repository.IUserRepository;
 import com.s.commerce.domain.user.valueObject.HashedPassword;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class CreateUserUseCase {
 
@@ -20,12 +22,14 @@ public class CreateUserUseCase {
     }
 
     public CreateUserResponse execute(CreateUserRequest request) {
-
+        log.info("Starting processing to create an user");
         if (userRepository.findByEmail(request.email()).isPresent()) {
+            log.warn("User already exists");
             throw new InvalidArgumentException("User already exists");
         }
 
         if(!request.password().equals(request.confirmPassword())) {
+            log.warn("Passwords not match");
             throw new InvalidArgumentException("Passwords not match");
         }
 
@@ -35,6 +39,7 @@ public class CreateUserUseCase {
 
         user = this.userRepository.create(user);
 
+        log.info("Create an user successful. userId={}", user.getId());
         return new CreateUserResponse(user.getId());
     }
 }

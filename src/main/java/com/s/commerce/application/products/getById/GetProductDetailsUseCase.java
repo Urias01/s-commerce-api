@@ -5,8 +5,10 @@ import com.s.commerce.domain.products.entity.Product;
 import com.s.commerce.domain.products.exceptions.ProductNotFoundException;
 import com.s.commerce.domain.products.repositories.IProductRepository;
 import com.s.commerce.domain.products.valueObject.ProductId;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class GetProductDetailsUseCase {
 
@@ -17,9 +19,14 @@ public class GetProductDetailsUseCase {
     }
 
     public GetProductDetailsResponse execute(ProductId productId) {
+        log.info("Start get a product details. productId={}", productId);
         Product product = this.productRepository.findById(productId)
-                .orElseThrow(ProductNotFoundException::new);
+                .orElseThrow(() -> {
+                    log.warn("Product not found. productId={}", productId);
+                    return new ProductNotFoundException();
+                });
 
+        log.info("Get a product details successful. productId={}", productId);
         return ProductMapper.toDetailsResponse(product);
     }
 }

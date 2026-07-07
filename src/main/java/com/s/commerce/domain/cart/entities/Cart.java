@@ -1,6 +1,6 @@
 package com.s.commerce.domain.cart.entities;
 
-import com.s.commerce.domain.cart.exceptions.NotFoundCartItemException;
+import com.s.commerce.domain.cart.exceptions.CartItemNotFoundException;
 import com.s.commerce.domain.cart.valueObjects.CartId;
 import com.s.commerce.domain.cart.valueObjects.CartItemId;
 import com.s.commerce.domain.common.Auditable;
@@ -52,7 +52,7 @@ public class Cart extends Auditable {
         CartItems item = this.items.stream()
                 .filter(i -> i.getId().equals(itemId))
                 .findFirst()
-                .orElseThrow(() -> new NotFoundCartItemException("Item not found"));
+                .orElseThrow(CartItemNotFoundException::new);
 
         this.items.remove(item);
     }
