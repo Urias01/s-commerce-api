@@ -9,11 +9,11 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @Slf4j
-@ControllerAdvice
-@RestController
+@RestControllerAdvice
 public class GlobalExceptions extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(DomainException.class)
@@ -47,11 +47,12 @@ public class GlobalExceptions extends ResponseEntityExceptionHandler {
                 .body(ApiResponse.error(e.getMessage()));
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ApiResponse<?>> handleNotReadable(HttpMessageNotReadableException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse.error("Corpo da requisição inválido ou malformado"));
-    }
+
+//    @ExceptionHandler(HttpMessageNotReadableException.class)
+//    public ResponseEntity<ApiResponse<?>> handleNotReadable(HttpMessageNotReadableException e) {
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                .body(ApiResponse.error("Corpo da requisição inválido ou malformado"));
+//    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<?>> handleGeneric(Exception e) {
